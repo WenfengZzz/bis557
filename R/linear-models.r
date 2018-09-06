@@ -10,5 +10,5 @@
 #' summary(fit)
 #' @export
 linear_model <- function(formula, data) {
-  # Your code here.
+  lm(formula, data)
 }
