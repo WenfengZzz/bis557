@@ -1,4 +1,14 @@
-# fit a ridge regression model
+#' Fit a ridge regression model
+#'
+#' @description This function performs ridge regression.
+#' @param formula a formula
+#' @param data a data.frame
+#' @param lambda a numeric parameter
+#' @return An ridge_reg object
+#' @import stats MASS graphics
+#' @examples
+#' fit <- ridge_reg(Sepal.Length ~., 1.2, iris)
+#' @export
 
 ridge_reg <- function(formula, data, lambda){
 	
