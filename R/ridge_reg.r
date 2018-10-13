@@ -11,8 +11,8 @@
 #' @export
 
 ridge_reg <- function(formula, lambda, data){
-	
-	x <- as.matrix(model.matrix(formula, data))
+  
+  x <- as.matrix(model.matrix(formula, data))
 	y <- data[,as.character(formula)[2]]
 	
   svd_obj <- svd(x)
