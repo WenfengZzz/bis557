@@ -11,9 +11,8 @@
 #' @export
 
 ridge_reg <- function(formula, lambda, data){
-  
   x <- as.matrix(model.matrix(formula, data))
-	y <- data[,as.character(formula)[2]]
+  y <- data[,as.character(formula)[2]]
 	
   svd_obj <- svd(x)
   U <- svd_obj[["u"]]
@@ -24,7 +23,7 @@ ridge_reg <- function(formula, lambda, data){
 
   # beta <- solve(t(x)%*%x+lambda*diag(dim(x)[2])) %*% t(x) %*% y
 
-	# Format coef for export
+  # Format coef for export
   coef <- as.numeric(beta)
   names(coef) <- colnames(x)
 
