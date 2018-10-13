@@ -14,16 +14,15 @@ output:
 
 ## The ridge regression function
 
-Using iris as example
+Use iris as example
 ```{r}
 library(bis557)
 fit <- ridge_reg(Sepal.Length ~ .,1.2, iris)
 fit
 ```
 
-## Looks at effect on the out-of-sample mean square error as $\lambda$ varies
+## Look at effect on the out-of-sample mean square error as $\lambda$ varies
 
-### Train the model using training dataset
 ```{r}
 data("ridge_train")
 data("ridge_test")
@@ -38,11 +37,18 @@ ridge_mse <- function(formula, lambda, train_set, test_set){
 }
 
 # set lambda values
-ridge_mse(y~., 1.2, ridge_train, ridge_test)
-lambda <- seq(0, 10, 0.1)
+# singular values
+
+x <- as.matrix(model.matrix(y ~.,ridge_train))
+svd_obj <- svd(x)
+lambda.range <- range(svd_obj[["d"]])^2
+lambda <- seq(0,lambda.range[2], 0.5)
 mse <- sapply(lambda, function(lambda) 
-          ridge_mse(y ~ . - 1, lambda, ridge_train, ridge_test))
+          ridge_mse(y ~., lambda, ridge_train, ridge_test))
 
 # plot
-plot(mse~lambda)
+plot(mse~log(lambda), type = "l")
+lambda[which(mse == min(mse))]
 ```
+
+Achieve lowest mse when lambda is set to 29.5
