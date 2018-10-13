@@ -10,7 +10,7 @@
 #' fit <- ridge_reg(Sepal.Length ~., 1.2, iris)
 #' @export
 
-ridge_reg <- function(formula, data, lambda){
+ridge_reg <- function(formula, lambda, data){
 	
 	x <- as.matrix(model.matrix(formula, data))
 	y <- data[,as.character(formula)[2]]
