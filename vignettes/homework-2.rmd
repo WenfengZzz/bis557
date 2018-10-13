@@ -50,5 +50,4 @@ mse <- sapply(lambda, function(lambda)
 plot(mse~log(lambda), type = "l")
 lambda[which(mse == min(mse))]
 ```
-
-Achieve lowest mse when lambda is set to 29.5
+Mse is lowest when lambda is set to 29.5
