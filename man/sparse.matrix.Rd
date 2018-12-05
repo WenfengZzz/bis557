@@ -21,6 +21,3 @@ A sparse.matrix object
 \description{
 create sparse matrix using sparse.matrix, operations defined including add, multiply and transpose
 }
-\examples{
-sm <- sparse.matrix(i = c(1, 2), j = c(2, 3), x = (9, 10), dims = c(10, 10))
-}

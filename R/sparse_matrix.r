@@ -6,8 +6,6 @@
 #' @param x value of the element corresponding to i, j
 #' @param dims dimensions of the sparse matrix
 #' @return A sparse.matrix object
-#' @examples
-#' sm <- sparse.matrix(i = c(1, 2), j = c(2, 3), x = (9, 10), dims = c(10, 10))
 #' @export
 
 # define class
@@ -27,7 +25,12 @@ sparse.matrix <- function(i, j, x, dims = c(max(i), max(j))){
   sparse.matrix(c$i, c$j, c$x, dims = a[[2]])
 }
 
-# multiply
+# multiply 
+# %*% is not S3 object
+`%*%.default` = .Primitive("%*%")  # keep defalut
+`%*%` = function(x,...){ 
+  UseMethod("%*%",x)
+}
 `%*%` <- function(x, y) {
   UseMethod("%*%", x)
 }
