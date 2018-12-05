@@ -1,3 +1,15 @@
+#' Sparse matrix and its operations
+#'
+#' @description create sparse matrix using sparse.matrix, operations defined including add, multiply and transpose
+#' @param i row index of a nontrival element
+#' @param j col index of a nontrival element
+#' @param x value of the element corresponding to i, j
+#' @param dims dimensions of the sparse matrix
+#' @return A sparse.matrix object
+#' @examples
+#' sm <- sparse.matrix(i = c(1, 2), j = c(2, 3), x = (9, 10), dims = c(10, 10))
+#' @export
+
 # define class
 sparse.matrix <- function(i, j, x, dims = c(max(i), max(j))){
   structure(list(data.frame(i = c(1, 2), j = c(1, 1), x = c(3, 1)), dims), class = "sparse.matrix")

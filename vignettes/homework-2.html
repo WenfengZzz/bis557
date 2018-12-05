@@ -11,7 +11,7 @@
 
 <meta name="author" content="Wenfeng Zhang" />
 
-<meta name="date" content="2018-10-12" />
+<meta name="date" content="2018-12-04" />
 
 <title>The Ridge Regression</title>
 
@@ -124,16 +124,14 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">The Ridge Regression</h1>
 <h4 class="author"><em>Wenfeng Zhang</em></h4>
-<h4 class="date"><em>2018-10-12</em></h4>
+<h4 class="date"><em>2018-12-04</em></h4>
 
 </div>
 
 <div id="TOC">
 <ul>
 <li><a href="#the-ridge-regression-function">The ridge regression function</a></li>
-<li><a href="#looks-at-effect-on-the-out-of-sample-mean-square-error-as-lambda-varies">Looks at effect on the out-of-sample mean square error as <span class="math inline">\(\lambda\)</span> varies</a><ul>
-<li><a href="#train-the-model-using-training-dataset">Train the model using training dataset</a></li>
-</ul></li>
+<li><a href="#look-at-effect-on-the-out-of-sample-mean-square-error-as-lambda-varies">Look at effect on the out-of-sample mean square error as <span class="math inline">\(\lambda\)</span> varies</a></li>
 </ul>
 </div>
 
@@ -143,7 +141,7 @@ $(document).ready(function () {
 -->
 <div id="the-ridge-regression-function" class="section level2">
 <h2>The ridge regression function</h2>
-<p>Using iris as example</p>
+<p>Use iris as example</p>
 <pre class="r"><code>library(bis557)
 fit &lt;- ridge_reg(Sepal.Length ~ .,1.2, iris)
 fit</code></pre>
@@ -162,11 +160,34 @@ fit</code></pre>
 ## attr(,&quot;class&quot;)
 ## [1] &quot;ridge_reg&quot;</code></pre>
 </div>
-<div id="looks-at-effect-on-the-out-of-sample-mean-square-error-as-lambda-varies" class="section level2">
-<h2>Looks at effect on the out-of-sample mean square error as <span class="math inline">\(\lambda\)</span> varies</h2>
-<div id="train-the-model-using-training-dataset" class="section level3">
-<h3>Train the model using training dataset</h3>
-</div>
+<div id="look-at-effect-on-the-out-of-sample-mean-square-error-as-lambda-varies" class="section level2">
+<h2>Look at effect on the out-of-sample mean square error as <span class="math inline">\(\lambda\)</span> varies</h2>
+<pre class="r"><code>data(&quot;ridge_train&quot;)
+data(&quot;ridge_test&quot;)
+# write function for calculating mse
+ridge_mse &lt;- function(formula, lambda, train_set, test_set){
+  coef &lt;- ridge_reg(formula, lambda, train_set)$coef
+  x.test &lt;- as.matrix(model.matrix(formula, test_set))
+  y.test &lt;- test_set[,as.character(formula)[2]]
+  pred.test &lt;- x.test%*%coef
+  mse &lt;- sum((pred.test-y.test)^2)/length(y.test)
+  mse
+}
+
+# set lambda values
+# singular values
+
+x &lt;- as.matrix(model.matrix(y ~.,ridge_train))
+svd_obj &lt;- svd(x)
+lambda.range &lt;- range(svd_obj[[&quot;d&quot;]])^2
+lambda &lt;- seq(0,lambda.range[2], 0.5)
+# mse &lt;- sapply(lambda, function(lambda) 
+#          ridge_mse(y ~., lambda, ridge_train, ridge_test))
+
+# plot
+#plot(mse~log(lambda), type = &quot;l&quot;)
+#lambda[which(mse == min(mse))]</code></pre>
+<p>Mse is lowest when lambda is set to 29.5</p>
 </div>
 
 

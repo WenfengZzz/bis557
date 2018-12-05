@@ -43,11 +43,11 @@ x <- as.matrix(model.matrix(y ~.,ridge_train))
 svd_obj <- svd(x)
 lambda.range <- range(svd_obj[["d"]])^2
 lambda <- seq(0,lambda.range[2], 0.5)
-mse <- sapply(lambda, function(lambda) 
-          ridge_mse(y ~., lambda, ridge_train, ridge_test))
+# mse <- sapply(lambda, function(lambda) 
+#          ridge_mse(y ~., lambda, ridge_train, ridge_test))
 
 # plot
-plot(mse~log(lambda), type = "l")
-lambda[which(mse == min(mse))]
+#plot(mse~log(lambda), type = "l")
+#lambda[which(mse == min(mse))]
 ```
 Mse is lowest when lambda is set to 29.5
