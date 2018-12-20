@@ -9,7 +9,7 @@ output:
 ---
 <!--
 %\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Homework 5 vignette}
+%\VignetteIndexEntry{Homework-5 vignette}
 -->
 
 
@@ -18,6 +18,7 @@ In class we used the LASSO to predict hand-writting characters in the MNIST data
 
 ```{r}
 library(keras)
+install_keras()
 library(glmnet)
 library(doMC)
 
@@ -40,6 +41,8 @@ y_test <- factor(y_test)
 set.seed(23331)
 s <- sample(seq_along(y_train), 1000)
 fit <- cv.glmnet(x_train[s,], y_train[s], family = "multinomial")
+
+# save model and reload to save time
 preds <- predict(fit$glmnet.fit, x_train[s,], s = fit$lambda.min, 
                  type = "class")
 # table(as.vector(preds), y_train[s])
@@ -67,27 +70,30 @@ CASL Number 4 in Exercises 8.11
 
 Adjust the kernel size, and any other parameters you think are useful, in the convolutional neural network for EMNIST in Section 8.10.4. Can you improve on the classification rate?  
 ```{r}
-load("emnist.Rdata")
-# train set
-X_train <- emnist$dataset[[1]][[1]]/255
-x_train <- array(dim = c(nrow(X_train), 28, 28))
-for (i in 1:nrow(X_train)) {
-  x_train[i,,] <- matrix(X_train[i,], nrow=28, ncol=28)
-}
-y_train <- as.vector(emnist$dataset[[1]][[2]])-1
-y_train <- to_categorical(y_train, num_classes = 26)
-# test set
-X_test <- emnist$dataset[[2]][[1]]/255
-x_test <- array(dim = c(nrow(X_test), 28, 28))
-for (i in 1:nrow(X_test)) {
-  x_test[i,,] <- matrix(X_test[i,], nrow=28, ncol=28)
-}
-y_test <- as.vector(emnist$dataset[[2]][[2]])-1
-y_test <- to_categorical(y_test)
-
-x_train <- array_reshape(x_train, c(nrow(x_train), 28, 28, 1))
-x_test <- array_reshape(x_test, c(nrow(x_test), 28, 28, 1))
-
+# load("emnist.Rdata")
+# # train set
+# X_train <- emnist$dataset[[1]][[1]]/255
+# x_train <- array(dim = c(nrow(X_train), 28, 28))
+# for (i in 1:nrow(X_train)) {
+#   x_train[i,,] <- matrix(X_train[i,], nrow=28, ncol=28)
+# }
+# y_train <- as.vector(emnist$dataset[[1]][[2]])-1
+# y_train <- to_categorical(y_train, num_classes = 26)
+# # test set
+# X_test <- emnist$dataset[[2]][[1]]/255
+# x_test <- array(dim = c(nrow(X_test), 28, 28))
+# for (i in 1:nrow(X_test)) {
+#   x_test[i,,] <- matrix(X_test[i,], nrow=28, ncol=28)
+# }
+# y_test <- as.vector(emnist$dataset[[2]][[2]])-1
+# y_test <- to_categorical(y_test)
+# 
+# x_train <- array_reshape(x_train, c(nrow(x_train), 28, 28, 1))
+# x_test <- array_reshape(x_test, c(nrow(x_test), 28, 28, 1))
+# 
+# save(x_test, y_test, file = "emnist_test.Rdata")
+# save(x_train, y_train, file = "emnist_train.Rdata")
+load("emnist_test.Rdata")
 # original model in textbook
 model <- keras_model_sequential()
 model %>%

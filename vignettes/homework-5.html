@@ -144,7 +144,12 @@ $(document).ready(function () {
 <h2>Question 1</h2>
 <p>In class we used the LASSO to predict hand-writting characters in the MNIST data set. Increase the out-of-sample prediction accuracy by extracting predictive features from the images.</p>
 <pre class="r"><code>library(keras)
-library(glmnet)</code></pre>
+install_keras()</code></pre>
+<pre><code>## Creating virtualenv for TensorFlow at  ~/.virtualenvs/r-tensorflow 
+## Installing TensorFlow ...
+## 
+## Installation complete.</code></pre>
+<pre class="r"><code>library(glmnet)</code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre><code>## Loading required package: foreach</code></pre>
 <pre><code>## Loaded glmnet 2.0-16</code></pre>
@@ -170,6 +175,8 @@ y_test &lt;- factor(y_test)
 set.seed(23331)
 s &lt;- sample(seq_along(y_train), 1000)
 fit &lt;- cv.glmnet(x_train[s,], y_train[s], family = &quot;multinomial&quot;)
+
+# save model and reload to save time
 preds &lt;- predict(fit$glmnet.fit, x_train[s,], s = fit$lambda.min, 
                  type = &quot;class&quot;)
 # table(as.vector(preds), y_train[s])
@@ -194,27 +201,30 @@ sum(diag(t)) / sum(t)</code></pre>
 <h2>Question 2</h2>
 <p>CASL Number 4 in Exercises 8.11</p>
 <p>Adjust the kernel size, and any other parameters you think are useful, in the convolutional neural network for EMNIST in Section 8.10.4. Can you improve on the classification rate?</p>
-<pre class="r"><code>load(&quot;emnist.Rdata&quot;)
-# train set
-X_train &lt;- emnist$dataset[[1]][[1]]/255
-x_train &lt;- array(dim = c(nrow(X_train), 28, 28))
-for (i in 1:nrow(X_train)) {
-  x_train[i,,] &lt;- matrix(X_train[i,], nrow=28, ncol=28)
-}
-y_train &lt;- as.vector(emnist$dataset[[1]][[2]])-1
-y_train &lt;- to_categorical(y_train, num_classes = 26)
-# test set
-X_test &lt;- emnist$dataset[[2]][[1]]/255
-x_test &lt;- array(dim = c(nrow(X_test), 28, 28))
-for (i in 1:nrow(X_test)) {
-  x_test[i,,] &lt;- matrix(X_test[i,], nrow=28, ncol=28)
-}
-y_test &lt;- as.vector(emnist$dataset[[2]][[2]])-1
-y_test &lt;- to_categorical(y_test)
-
-x_train &lt;- array_reshape(x_train, c(nrow(x_train), 28, 28, 1))
-x_test &lt;- array_reshape(x_test, c(nrow(x_test), 28, 28, 1))
-
+<pre class="r"><code># load(&quot;emnist.Rdata&quot;)
+# # train set
+# X_train &lt;- emnist$dataset[[1]][[1]]/255
+# x_train &lt;- array(dim = c(nrow(X_train), 28, 28))
+# for (i in 1:nrow(X_train)) {
+#   x_train[i,,] &lt;- matrix(X_train[i,], nrow=28, ncol=28)
+# }
+# y_train &lt;- as.vector(emnist$dataset[[1]][[2]])-1
+# y_train &lt;- to_categorical(y_train, num_classes = 26)
+# # test set
+# X_test &lt;- emnist$dataset[[2]][[1]]/255
+# x_test &lt;- array(dim = c(nrow(X_test), 28, 28))
+# for (i in 1:nrow(X_test)) {
+#   x_test[i,,] &lt;- matrix(X_test[i,], nrow=28, ncol=28)
+# }
+# y_test &lt;- as.vector(emnist$dataset[[2]][[2]])-1
+# y_test &lt;- to_categorical(y_test)
+# 
+# x_train &lt;- array_reshape(x_train, c(nrow(x_train), 28, 28, 1))
+# x_test &lt;- array_reshape(x_test, c(nrow(x_test), 28, 28, 1))
+# 
+# save(x_test, y_test, file = &quot;emnist_test.Rdata&quot;)
+# save(x_train, y_train, file = &quot;emnist_train.Rdata&quot;)
+load(&quot;emnist_test.Rdata&quot;)
 # original model in textbook
 model &lt;- keras_model_sequential()
 model %&gt;%
